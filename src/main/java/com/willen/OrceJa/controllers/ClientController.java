@@ -2,6 +2,7 @@ package com.willen.OrceJa.controllers;
 
 import com.willen.OrceJa.dto.SaveClientDto;
 import com.willen.OrceJa.services.ClientService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,7 @@ public class ClientController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Void> saveClient(@RequestBody SaveClientDto clientRequest) {
+    public ResponseEntity<Void> saveClient(@Valid @RequestBody SaveClientDto clientRequest) {
         clientService.saveClient(clientRequest);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
