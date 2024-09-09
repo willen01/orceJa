@@ -2,6 +2,8 @@ package com.willen.OrceJa.controllers;
 
 import com.willen.OrceJa.dto.SaveClientDto;
 import com.willen.OrceJa.services.ClientService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,15 @@ public class ClientController {
     }
 
     @PostMapping("/save")
+    @Operation(
+            summary = "Salvar cliente",
+            description = "Esse endpoint registra um novo cliente",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Success"),
+                    @ApiResponse(responseCode = "200", description = "Success"),
+
+            }
+    )
     public ResponseEntity<Void> saveClient(@Valid @RequestBody SaveClientDto clientRequest) {
         clientService.saveClient(clientRequest);
 
