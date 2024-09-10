@@ -3,6 +3,7 @@ package com.willen.OrceJa.services;
 import com.willen.OrceJa.dto.SaveProjectDto;
 import com.willen.OrceJa.entities.Client;
 import com.willen.OrceJa.entities.Project;
+import com.willen.OrceJa.enums.ProjectStatus;
 import com.willen.OrceJa.repositories.ClientRepository;
 import com.willen.OrceJa.repositories.ProjectRepository;
 import org.springframework.stereotype.Service;
@@ -29,10 +30,7 @@ public class ProjectService {
         project.setClient(client);
         project.setName(projectRequest.name());
         project.setDescription(projectRequest.description());
-
-        if (projectRequest.status() == null) {
-            project.setStatus(projectRequest.status());
-        }
+        project.setStatus(projectRequest.status());
 
         projectRepository.save(project);
     }
