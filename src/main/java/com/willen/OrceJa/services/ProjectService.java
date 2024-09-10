@@ -1,14 +1,19 @@
 package com.willen.OrceJa.services;
 
+import com.willen.OrceJa.dto.ProjectListDto;
 import com.willen.OrceJa.dto.SaveProjectDto;
 import com.willen.OrceJa.entities.Client;
 import com.willen.OrceJa.entities.Project;
-import com.willen.OrceJa.enums.ProjectStatus;
+import com.willen.OrceJa.exceptions.UserNotFoundException;
 import com.willen.OrceJa.repositories.ClientRepository;
 import com.willen.OrceJa.repositories.ProjectRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
@@ -33,6 +38,22 @@ public class ProjectService {
         project.setStatus(projectRequest.status());
 
         projectRepository.save(project);
+    }
+
+    public Set<ProjectListDto> listProjectByClientId(String clientId) {
+        boolean existsClient = clientRepository.existsById(UUID.fromString(clientId));
+
+        if (!existsClient)  {
+            throw new UserNotFoundException("User with id " + clientId + " not found");
+        }
+
+        List<Project> projects = projectRepository.listProjectByClientId(UUID.fromString(clientId));
+//        List<ProjectListDto> projectResponse = new ArrayList<>();
+
+        return projects.stream()
+                .map(p -> new ProjectListDto(p.getProjectId(), p.getName(), p.getDescription(), p.getStatus()))
+                .collect(Collectors.toSet());
+
     }
 
 }
