@@ -4,12 +4,11 @@ import com.willen.OrceJa.dto.ProjectListDto;
 import com.willen.OrceJa.dto.SaveProjectDto;
 import com.willen.OrceJa.entities.Client;
 import com.willen.OrceJa.entities.Project;
-import com.willen.OrceJa.exceptions.UserNotFoundException;
+import com.willen.OrceJa.exceptions.ObjectNotFoundException;
 import com.willen.OrceJa.repositories.ClientRepository;
 import com.willen.OrceJa.repositories.ProjectRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -44,7 +43,7 @@ public class ProjectService {
         boolean existsClient = clientRepository.existsById(UUID.fromString(clientId));
 
         if (!existsClient)  {
-            throw new UserNotFoundException("User with id " + clientId + " not found");
+            throw new ObjectNotFoundException("User with id " + clientId + " not found");
         }
 
         List<Project> projects = projectRepository.listProjectByClientId(UUID.fromString(clientId));

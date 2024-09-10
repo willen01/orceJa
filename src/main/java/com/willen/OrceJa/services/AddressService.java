@@ -4,7 +4,7 @@ import com.willen.OrceJa.dto.SaveAddressDto;
 import com.willen.OrceJa.entities.Address;
 import com.willen.OrceJa.entities.Client;
 import com.willen.OrceJa.exceptions.DefaultAddressRemovalException;
-import com.willen.OrceJa.exceptions.UserNotFoundException;
+import com.willen.OrceJa.exceptions.ObjectNotFoundException;
 import com.willen.OrceJa.repositories.AddressRepository;
 import com.willen.OrceJa.repositories.ClientRepository;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class AddressService {
 
     public void saveAddress(SaveAddressDto saveAddressDto) {
         Client client = clientRepository.findById(UUID.fromString(saveAddressDto.clientId()))
-                .orElseThrow(() -> new UserNotFoundException("user not registered"));
+                .orElseThrow(() -> new ObjectNotFoundException("user not registered"));
 
         Address address = new Address();
         address.setClient(client);
