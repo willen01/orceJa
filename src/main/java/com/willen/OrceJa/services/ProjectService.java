@@ -27,7 +27,8 @@ public class ProjectService {
     }
 
     public void saveProject(SaveProjectDto projectRequest) {
-        Client client = clientRepository.findById(UUID.fromString(projectRequest.clientId())).orElseThrow();
+        Client client = clientRepository.findById(UUID.fromString(projectRequest.clientId()))
+                .orElseThrow(() -> new ObjectNotFoundException("User with id " + projectRequest.clientId() + " not found"));
 
         Project project = new Project();
 

@@ -42,7 +42,7 @@ public class AddressService {
     public void removeAddress(String addressId) {
         Address address = addressRepository
                 .findById(UUID.fromString(addressId))
-                .orElseThrow();
+                .orElseThrow(() -> new ObjectNotFoundException("Address with id" + addressId + " not found"));
 
         boolean isAddressDefault = address.isDefault();
 
