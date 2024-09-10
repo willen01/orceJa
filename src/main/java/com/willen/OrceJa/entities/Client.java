@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -23,6 +24,12 @@ public class Client {
 
     @CreationTimestamp
     private Instant registeredAt;
+
+    @OneToMany(
+            mappedBy = "client",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    private Set<Address> addresses;
 
     public Client() {
     }
@@ -73,5 +80,13 @@ public class Client {
 
     public void setRegisteredAt(Instant registeredAt) {
         this.registeredAt = registeredAt;
+    }
+
+    public Set<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(Set<Address> addresses) {
+        this.addresses = addresses;
     }
 }
