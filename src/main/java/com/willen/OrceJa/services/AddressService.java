@@ -3,6 +3,7 @@ package com.willen.OrceJa.services;
 import com.willen.OrceJa.dto.SaveAddressDto;
 import com.willen.OrceJa.entities.Address;
 import com.willen.OrceJa.entities.Client;
+import com.willen.OrceJa.exceptions.DefaultAddressRemovalException;
 import com.willen.OrceJa.exceptions.UserNotFoundException;
 import com.willen.OrceJa.repositories.AddressRepository;
 import com.willen.OrceJa.repositories.ClientRepository;
@@ -36,4 +37,21 @@ public class AddressService {
 
         addressRepository.save(address);
     }
+
+
+    public void removeAddress(String addressId) {
+        Address address = addressRepository
+                .findById(UUID.fromString(addressId))
+                .orElseThrow();
+
+        boolean isAddressDefault = address.isDefault();
+
+        if (isAddressDefault) {
+            throw new DefaultAddressRemovalException("Cannot remove the address because it is set as the default. " +
+                    "Please choose a different address as default before removal.");
+        }
+
+        addressRepository.deleteById(UUID.fromString(addressId));
+    }
+
 }

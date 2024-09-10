@@ -34,4 +34,10 @@ public class ManagerException {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
+    @ExceptionHandler(DefaultAddressRemovalException.class)
+    public ResponseEntity<StandardError> defaultAddressException(DefaultAddressRemovalException ex,
+                                                                 HttpServletRequest request) {
+        StandardError error = new StandardError(Instant.now(), HttpStatus.CONFLICT, ex.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
 }
