@@ -8,6 +8,8 @@ import com.willen.OrceJa.repositories.AddressRepository;
 import com.willen.OrceJa.repositories.ClientRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class AddressService {
 
@@ -21,7 +23,7 @@ public class AddressService {
     }
 
     public void saveAddress(SaveAddressDto saveAddressDto) {
-        Client client = clientRepository.findById(saveAddressDto.clientId())
+        Client client = clientRepository.findById(UUID.fromString(saveAddressDto.clientId()))
                 .orElseThrow(() -> new UserNotFoundException("user not registered"));
 
         Address address = new Address();

@@ -2,6 +2,7 @@ package com.willen.OrceJa.controllers;
 
 import com.willen.OrceJa.dto.SaveAddressDto;
 import com.willen.OrceJa.services.AddressService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,7 @@ public class AddressController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Void> saveAddress(@RequestBody SaveAddressDto request) {
+    public ResponseEntity<Void> saveAddress(@Valid @RequestBody SaveAddressDto request) {
         addressService.saveAddress(request);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
