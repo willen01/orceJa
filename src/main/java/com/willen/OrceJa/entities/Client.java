@@ -1,6 +1,14 @@
 package com.willen.OrceJa.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
@@ -30,6 +38,9 @@ public class Client {
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private Set<Address> addresses;
+
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    private Set<Project> projects;
 
     public Client() {
     }
@@ -88,5 +99,13 @@ public class Client {
 
     public void setAddresses(Set<Address> addresses) {
         this.addresses = addresses;
+    }
+
+    public Set<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(Set<Project> projects) {
+        this.projects = projects;
     }
 }

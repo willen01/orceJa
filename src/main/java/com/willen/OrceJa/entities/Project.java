@@ -1,7 +1,18 @@
 package com.willen.OrceJa.entities;
 
 import com.willen.OrceJa.enums.ProjectStatus;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
@@ -25,6 +36,13 @@ public class Project {
 
     @CreationTimestamp
     private Instant createdAt;
+
+    @OneToOne(mappedBy = "project", cascade = CascadeType.ALL)
+    private Budget budget;
+
+    @ManyToOne()
+    @JoinColumn(name = "client_id")
+    private Client client;
 
     public Project() {
     }
@@ -75,5 +93,21 @@ public class Project {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Budget getBudget() {
+        return budget;
+    }
+
+    public void setBudget(Budget budget) {
+        this.budget = budget;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 }
