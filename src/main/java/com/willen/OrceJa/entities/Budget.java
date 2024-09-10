@@ -1,18 +1,10 @@
 package com.willen.OrceJa.entities;
 
 import com.willen.OrceJa.enums.BudgetStatus;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -34,6 +26,10 @@ public class Budget {
     @OneToOne
     @JoinColumn(name = "project_id")
     private Project project;
+
+
+    @OneToMany(mappedBy = "budget", cascade = CascadeType.ALL)
+    private Set<Item> items;
 
     public Budget() {
     }
@@ -83,5 +79,13 @@ public class Budget {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public Set<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(Set<Item> items) {
+        this.items = items;
     }
 }
