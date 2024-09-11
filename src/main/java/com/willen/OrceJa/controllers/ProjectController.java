@@ -1,5 +1,6 @@
 package com.willen.OrceJa.controllers;
 
+import com.willen.OrceJa.dto.ListAllProjectsDto;
 import com.willen.OrceJa.dto.ProjectListDto;
 import com.willen.OrceJa.dto.SaveProjectDto;
 import com.willen.OrceJa.services.ProjectService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -33,6 +35,14 @@ public class ProjectController {
     @GetMapping("/projectsByClient/{clientId}")
     public ResponseEntity<Set<ProjectListDto>> listProjectsById(@PathVariable("clientId") String clientId) {
         Set<ProjectListDto> projectsResponse = projectService.listProjectByClientId(clientId);
+
+        return new ResponseEntity<>(projectsResponse,HttpStatus.OK);
+    }
+
+
+    @GetMapping("/all")
+    public ResponseEntity<List<ListAllProjectsDto>> listAllProjects() {
+        List<ListAllProjectsDto> projectsResponse = projectService.listAllProjects();
 
         return new ResponseEntity<>(projectsResponse,HttpStatus.OK);
     }

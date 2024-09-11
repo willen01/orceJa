@@ -1,5 +1,6 @@
 package com.willen.OrceJa.services;
 
+import com.willen.OrceJa.dto.ListAllProjectsDto;
 import com.willen.OrceJa.dto.ProjectListDto;
 import com.willen.OrceJa.dto.SaveProjectDto;
 import com.willen.OrceJa.entities.Client;
@@ -43,17 +44,28 @@ public class ProjectService {
     public Set<ProjectListDto> listProjectByClientId(String clientId) {
         boolean existsClient = clientRepository.existsById(UUID.fromString(clientId));
 
-        if (!existsClient)  {
+        if (!existsClient) {
             throw new ObjectNotFoundException("User with id " + clientId + " not found");
         }
 
         List<Project> projects = projectRepository.listProjectByClientId(UUID.fromString(clientId));
-//        List<ProjectListDto> projectResponse = new ArrayList<>();
 
         return projects.stream()
                 .map(p -> new ProjectListDto(p.getProjectId(), p.getName(), p.getDescription(), p.getStatus()))
                 .collect(Collectors.toSet());
 
+    }
+
+    public List<ListAllProjectsDto> listAllProjects() {
+        List<Project> allProjects = projectRepository.findAll();
+
+        return allProjects.stream()
+                .map(p -> new ListAllProjectsDto(
+                        p.getClient().getClientId(),
+                        p.getClient().getName(),
+                        p.getName(),
+                        p.getDescription(),
+                        p.getStatus())).toList();
     }
 
 }
