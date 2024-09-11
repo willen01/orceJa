@@ -68,4 +68,14 @@ public class ProjectService {
                         p.getStatus())).toList();
     }
 
+    public void deleteProjectById(String projectId) {
+        boolean projectIsExists = projectRepository.existsById(UUID.fromString(projectId));
+
+        if (!projectIsExists) {
+            throw new ObjectNotFoundException("Project with id " + projectId + " not found");
+        }
+
+        projectRepository.deleteById(UUID.fromString(projectId));
+    }
+
 }
