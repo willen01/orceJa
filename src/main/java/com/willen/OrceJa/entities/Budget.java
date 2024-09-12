@@ -23,12 +23,12 @@ public class Budget {
     @Enumerated(EnumType.STRING)
     private BudgetStatus status;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
 
 
-    @OneToMany(mappedBy = "budget", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "budget", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Item> items;
 
     public Budget() {

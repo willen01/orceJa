@@ -10,11 +10,9 @@ import com.willen.OrceJa.repositories.ProjectRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 @Service
 public class BudgetService {
@@ -58,5 +56,15 @@ public class BudgetService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
 
         budgetRepository.save(budget);
+    }
+
+    public void removeBudget(UUID budgetId) {
+        boolean budgetRegistered = budgetRepository.existsById(budgetId);
+
+        if (!budgetRegistered) {
+            throw new ObjectNotFoundException("Budget with id " + budgetId + " not found");
+        }
+
+        budgetRepository.deleteById(budgetId);
     }
 }
