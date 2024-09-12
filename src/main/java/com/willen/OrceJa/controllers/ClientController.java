@@ -4,6 +4,7 @@ import com.willen.OrceJa.dto.SaveClientDto;
 import com.willen.OrceJa.services.ClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/clients")
+@Tag(name = "clients")
 public class ClientController {
 
     private final ClientService clientService;
