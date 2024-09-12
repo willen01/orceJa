@@ -146,4 +146,37 @@ class BudgetServiceTest {
             assertEquals(uuidCaptor.getValue(), budgetId);
         }
     }
+
+    @Nested
+    class deleteBudget {
+
+        @Test
+        @DisplayName("Deve remover orçamento com sucesso")
+        void shouldBeAbleRemoveBudgetWithSuccess() {
+            UUID budgetId = UUID.randomUUID();
+
+            doReturn(true).when(budgetRepository).existsById(uuidCaptor.capture());
+
+            budgetService.removeBudget(budgetId);
+
+            verify(budgetRepository, times(1)).deleteById(uuidCaptor.capture());
+
+            List<UUID> inputCaptured = uuidCaptor.getAllValues();
+
+            assertEquals(inputCaptured.get(0), budgetId);
+            assertEquals(inputCaptured.get(1), budgetId);
+        }
+
+        @Test
+        @DisplayName("Deve lançar excessão ao remover orçamento não cadastrado")
+        void shouldBeThrowWhenRemoveUnregistedBudget() {
+            UUID budgetId = UUID.randomUUID();
+            doReturn(false).when(budgetRepository).existsById(uuidCaptor.capture());
+
+
+            assertThrows(ObjectNotFoundException.class, () -> budgetService.removeBudget(budgetId));
+            assertEquals(budgetId, uuidCaptor.getValue());
+            verify(budgetRepository, times(0)).deleteById(any());
+        }
+    }
 }
