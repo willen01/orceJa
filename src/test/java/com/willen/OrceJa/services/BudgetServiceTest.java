@@ -5,8 +5,10 @@ import com.willen.OrceJa.dto.SaveItemDto;
 import com.willen.OrceJa.entities.Project;
 import com.willen.OrceJa.enums.BudgetStatus;
 import com.willen.OrceJa.enums.ProjectStatus;
+import com.willen.OrceJa.exceptions.ObjectNotFoundException;
 import com.willen.OrceJa.repositories.BudgetRepository;
 import com.willen.OrceJa.repositories.ProjectRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -22,8 +24,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BudgetServiceTest {
@@ -77,6 +78,29 @@ class BudgetServiceTest {
             assertEquals(budgetRequest.projectId(), uuidCaptor.getValue());
             verify(projectRepository, times(1)).findById(any());
             verify(budgetRepository, times(1)).save(any());
+        }
+
+        @Test
+        @DisplayName("Deve lançar excessão ao cadastrar orçamento de projeto inexistente")
+        void shouldBeThrowWhenRegisterBudgetWithUnregisteredProject() {
+            UUID projectId = UUID.randomUUID();
+            doThrow(ObjectNotFoundException.class).when(projectRepository).findById(uuidCaptor.capture());
+
+            List<SaveItemDto> items = List.of(
+                    new SaveItemDto("item title I", 2, BigDecimal.valueOf(3.50)),
+                    new SaveItemDto("item title II", 5, BigDecimal.valueOf(2.99))
+            );
+
+            SaveBudgetDto budgetRequest = new SaveBudgetDto(
+                    projectId,
+                    "Project details",
+                    items,
+                    BudgetStatus.IN_PROGRESS
+            );
+
+            Assertions.assertThrows(ObjectNotFoundException.class, () -> budgetService.saveBudget(budgetRequest));
+            assertEquals(uuidCaptor.getValue(), projectId);
+            verify(budgetRepository, times(0)).save(any());
         }
     }
 
