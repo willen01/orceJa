@@ -1,6 +1,7 @@
 package com.willen.OrceJa.controllers;
 
 import com.willen.OrceJa.dto.SaveBudgetDto;
+import com.willen.OrceJa.entities.Budget;
 import com.willen.OrceJa.services.BudgetService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,13 @@ public class BudgetController {
     public ResponseEntity<Void> saveBudget(@RequestBody SaveBudgetDto request) {
         budgetService.saveBudget(request);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/listOne/{budgetId}")
+    public ResponseEntity<Budget> findBudgetById(@PathVariable("budgetId") String budgetId) {
+         Budget budget = budgetService.findBudgetById(UUID.fromString(budgetId));
+
+         return new ResponseEntity<>(budget, HttpStatus.OK);
     }
 
     @DeleteMapping("/remove/{budgetId}")

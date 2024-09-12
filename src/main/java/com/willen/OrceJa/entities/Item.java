@@ -1,5 +1,6 @@
 package com.willen.OrceJa.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -24,6 +25,7 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name = "budget_id")
+    @JsonBackReference
     private Budget budget;
 
     public Item() {

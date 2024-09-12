@@ -1,5 +1,7 @@
 package com.willen.OrceJa.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.willen.OrceJa.enums.BudgetStatus;
 import jakarta.persistence.*;
 
@@ -25,10 +27,11 @@ public class Budget {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
+    @JsonBackReference
     private Project project;
 
-
     @OneToMany(mappedBy = "budget", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Set<Item> items;
 
     public Budget() {

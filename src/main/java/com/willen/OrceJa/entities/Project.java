@@ -1,5 +1,6 @@
 package com.willen.OrceJa.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.willen.OrceJa.enums.ProjectStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -38,6 +39,7 @@ public class Project {
     private Instant createdAt;
 
     @OneToOne(mappedBy = "project", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Budget budget;
 
     @ManyToOne()

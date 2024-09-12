@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -66,5 +67,10 @@ public class BudgetService {
         }
 
         budgetRepository.deleteById(budgetId);
+    }
+
+    public Budget findBudgetById(UUID budgetId) {
+        return budgetRepository.findById(budgetId)
+                .orElseThrow(() -> new ObjectNotFoundException("Budget with id " + budgetId + " not found"));
     }
 }
