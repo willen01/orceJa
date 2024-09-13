@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   postgres:
-    container_name: orceja_db
+    container_name: orceja_database
     image: postgres
     environment:
       POSTGRES_USER: username
@@ -10,3 +10,17 @@ services:
       POSTGRES_DB: orceja_db
     ports:
       - '5432:5432'
+
+  app:
+    container_name: orceja_app
+    build: .
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://orceja_database:5432/orceja_db
+      SPRING_DATASOURCE_USERNAME: username
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+volumes:
+  db_data:
